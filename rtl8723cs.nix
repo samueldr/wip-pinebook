@@ -1,4 +1,4 @@
-{ fetchFromGitHub, kernel, nukeReferences }:
+{ stdenv, fetchFromGitHub, kernel, nukeReferences }:
 
 let
   inherit (kernel.stdenv.lib) concatStringsSep;
@@ -23,6 +23,7 @@ in kernel.stdenv.mkDerivation rec {
   '';
 
   makeFlags = concatStringsSep " " [
+    "CROSS_COMPILE=${stdenv.cc.targetPrefix}"
     "ARCH=${kernel.stdenv.hostPlatform.platform.kernelArch}"
     "KSRC=${kernel.dev}/lib/modules/${kernel.modDirVersion}/build"
     "MODDESTDIR=${out}"
